@@ -19,6 +19,7 @@ Package.onUse(function (api) {
   api.use('momentjs:moment@2.10.6');
   api.use('momentjs:twix@0.7.2');
 
+  api.addFiles('lib/klaviyo.js');
   api.addFiles([
     'common/collections.js'
   ], ['client', 'server']);
@@ -33,4 +34,6 @@ Package.onUse(function (api) {
     'client/templates/dashboard/dashboard.html',
     'client/templates/dashboard/dashboard.js'
   ], 'client');
+
+  api.export('Klaviyo');
 });
