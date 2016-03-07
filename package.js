@@ -25,7 +25,8 @@ Package.onUse(function (api) {
   ], ['client', 'server']);
 
   api.addFiles([
-    'server/registry.js'
+    'server/registry.js',
+    'server/methods/klaviyoMethods.js'
   ], 'server');
 
   api.addFiles([
