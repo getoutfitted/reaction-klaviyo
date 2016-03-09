@@ -38,3 +38,18 @@ Package.onUse(function (api) {
 
   api.export('Klaviyo');
 });
+
+Package.onTest(function (api) {
+  api.use('getoutfitted:reaction-klaviyo');
+  api.use('random');
+  api.use('dburles:factory');
+  api.use('velocity:html-reporter');
+  api.use('velocity:console-reporter');
+  api.use('velocity:helpers');
+  api.use('reactioncommerce:reaction-factories');
+  api.addFiles('tests/jasmine/factories/factory.js');
+  api.addFiles([
+    'tests/jasmine/server/integration/methods/klaviyo.js',
+    'tests/jasmine/server/integration/klaviyo.js'
+  ], 'server');
+});
