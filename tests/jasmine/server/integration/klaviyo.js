@@ -17,6 +17,7 @@ beforeAll(function () {
 describe('Klaviyo', function () {
   describe('trackEvent', function () {
     beforeEach(function () {
+      spyOn(Meteor, 'call');
       Meteor.users.remove({});
       return ReactionCore.Collections.Packages.remove({});
     });
@@ -62,16 +63,48 @@ describe('Klaviyo', function () {
       }).toThrowError('403 Access Denied, Klaviyo is not enabled for this shop.');
     });
 
-    it('should throw an error if event has no properties', function () {
-      const klaviyoPackage = Factory.create('klaviyoPackage');
+    it('should throw an error if event has no properties field', function () {
+      let klaviyoPackage = Factory.create('klaviyoPackage', {
+        'settings.api.publicKey': 'FakeKey',
+        'settings.api.privateKey': 'FakeKey'
+      });
       const user = Factory.create('user');
       spyOn(ReactionCore, 'getShopId').and.returnValue(klaviyoPackage.shopId);
       let event = klaviyoEventCreator(user);
-      event = _.omit(event, 'properties');
+      let eventWithOutProperties = _.omit(event, 'properties');
       expect(function () {
-        Klaviyo.trackEvent(event);
-      }).toThrow();
+        Klaviyo.trackEvent(eventWithOutProperties);
+      }).toThrowError('403 No Event or Properties were added to object');
     });
+
+    it('should throw an error if event has no properties', function () {
+      let klaviyoPackage = Factory.create('klaviyoPackage', {
+        'settings.api.publicKey': 'FakeKey',
+        'settings.api.privateKey': 'FakeKey'
+      });
+      const user = Factory.create('user');
+      spyOn(ReactionCore, 'getShopId').and.returnValue(klaviyoPackage.shopId);
+      let event = klaviyoEventCreator(user);
+      let eventWithOutProperties = _.omit(event.properties, 'Cost');
+      expect(function () {
+        Klaviyo.trackEvent(eventWithOutProperties);
+      }).toThrowError('403 No Event or Properties were added to object');
+    });
+
+    it('should throw an error if event has no event name', function () {
+      let klaviyoPackage = Factory.create('klaviyoPackage', {
+        'settings.api.publicKey': 'FakeKey',
+        'settings.api.privateKey': 'FakeKey'
+      });
+      const user = Factory.create('user');
+      spyOn(ReactionCore, 'getShopId').and.returnValue(klaviyoPackage.shopId);
+      let event = klaviyoEventCreator(user);
+      let eventWithOutEventName = _.omit(event, 'event');
+      expect(function () {
+        Klaviyo.trackEvent(eventWithOutEventName);
+      }).toThrowError('403 No Event or Properties were added to object');
+    });
+
 
     it('should throw an error if api keys are not configurered', function () {
       let klaviyoPackage = Factory.create('klaviyoPackage');
@@ -89,10 +122,9 @@ describe('Klaviyo', function () {
         'settings.api.privateKey': 'FakeKey'
       });
       const user = Factory.create('user');
-      let event = klaviyoEventCreator(user);
+      let eventWithAll = klaviyoEventCreator(user);
       spyOn(ReactionCore, 'getShopId').and.returnValue(klaviyoPackage.shopId);
-      spyOn(Meteor, 'call');
-      Klaviyo.trackEvent(event);
+      Klaviyo.trackEvent(eventWithAll);
       expect(Meteor.call).toHaveBeenCalled();
     });
   });
