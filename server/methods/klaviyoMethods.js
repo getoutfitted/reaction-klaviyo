@@ -37,7 +37,7 @@ Meteor.methods({
         let decoded = JSON.parse(buf.toString());
         ReactionCore.Log.warn('Klaviyo person was not logged', decoded);
       } else {
-        ReactionCore.Log.info('Klaviyo person successfully identified', response);
+        ReactionCore.Log.info('Klaviyo person successfully identified');
       }
     });
   }
