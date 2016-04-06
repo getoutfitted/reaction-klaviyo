@@ -34,6 +34,7 @@ Package.onUse(function (api) {
     'client/templates/dashboard/dashboard.html',
     'client/templates/dashboard/dashboard.js'
   ], 'client');
+  api.addAssets('images/klaviyo_flow.png', 'client');
 
   api.export('Klaviyo');
 });
