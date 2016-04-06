@@ -1,14 +1,25 @@
 <template name='klaviyoDashboard'>
-  <div class='container'>
-    <div class='row text-center'>
+  <div class='container text-center'>
+    <div class='row '>
       <h1>Klaviyo Usage</h1>
     </div>
     <div class='row'>
-      <h2>Setup </h2>
-      <p>Text</p>
+      <h2>Setup</h2>
+      <h4 class='lead'>Login to Klaviyo and copy your API keys. Enter your Public and Private API key for Klaviyo in the settings.</h4>
+      <div class='row'>
+        <div class='col-sm-6 col-sm-offset-3'>
+          {{> klaviyoSettings}}
+        </div>
+      </div>
+      <p>Don't have Klaviyo? <a href='https://www.klaviyo.com/' target='_blank'>Sign up here</a></p>
     </div>
     <div  class='row'>
       <h2>Usage</h2>
+      <h4 class='lead'>The Reaction Klaviyo package exports a Klaviyo Module which has two methods <strong>Klaviyo.trackEvent</strong> and <strong>Klaviyo.trackPerson</strong>, these methods accect an object that then hits the Klaviyo's Events or People API.</h4>
+    </div>
+    <div  class='row'>
+      <h2>Example</h2>
+      <h4 class='lead'>Say you wanted to create an action every time a user checked out, that started an email flow. </h4>
     </div>
   </div>
 </template>

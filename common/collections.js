@@ -2,12 +2,12 @@ ReactionCore.Schemas.KlaviyoPackageConfig = new SimpleSchema([
   ReactionCore.Schemas.PackageConfig, {
     'settings.api.publicKey': {
       type: String,
-      label: 'Public facing key that can be included in code',
+      label: 'Klaviyo Public Key',
       optional: true
     },
     'settings.api.privateKey': {
       type: String,
-      label: 'Private API key for more hidden code',
+      label: 'Klaviyo Private API Key',
       optional: true
     }
   }

@@ -17,7 +17,6 @@ Package.onUse(function (api) {
   api.use('reactioncommerce:reaction-router');
   api.use('reactioncommerce:reaction-collections');
   api.use('momentjs:moment@2.10.6');
-  api.use('momentjs:twix@0.7.2');
 
   api.addFiles('lib/klaviyo.js');
   api.addFiles([
@@ -37,4 +36,27 @@ Package.onUse(function (api) {
   ], 'client');
 
   api.export('Klaviyo');
+});
+
+Package.onTest(function (api) {
+  // api.use('sanjo:jasmine@0.21.0');
+  api.use('sanjo:jasmine');
+  api.use('reactioncommerce:core@0.12.0');
+  api.use('underscore');
+  api.use('random');
+  api.use('http');
+  api.use('base64');
+  api.use('dburles:factory@0.3.10');
+  // api.use('velocity:html-reporter@0.9.1');
+  api.use('velocity:html-reporter');
+  // api.use('velocity:console-reporter@0.1.4');
+  api.use('velocity:console-reporter');
+  api.use('velocity:helpers');
+  api.use('reactioncommerce:reaction-factories');
+  api.use('getoutfitted:reaction-klaviyo');
+  api.addFiles('tests/jasmine/factories/factory.js');
+  api.addFiles([
+    'tests/jasmine/server/integration/methods/klaviyo.js',
+    'tests/jasmine/server/integration/klaviyo.js'
+  ], 'server');
 });
