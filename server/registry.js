@@ -2,7 +2,7 @@ ReactionCore.registerPackage({
   label: 'Klaviyo',
   name: 'reaction-klaviyo',
   icon: 'fa fa-email',
-  autoEnable: false,
+  autoEnable: true,
   registry: [{
     route: '/dashboard/klaviyo',
     provides: 'dashboard',
