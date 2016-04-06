@@ -13,18 +13,62 @@
       </div>
       <p>Don't have Klaviyo? <a href='https://www.klaviyo.com/' target='_blank'>Sign up here</a></p>
     </div>
+    <div class='row'>
+      <h4><a href="https://www.klaviyo.com/docs">Check out the Klaviyo API Docs</a></h4>
+      <p>This package has built in functionality for Klayivo's <strong>Events API</strong> and <strong>People API</strong>.</p>
+      <p>This package creates an exported Klaviyo Object which you can pass your customized information required to create a Klaviyo Event or Person.</p>
+    </div>
+    <div class='row'>
+      <h4>Required Fields</h4>
+      <p>Klaviyo requires that each object that gets passed must have <strong><em>$email</em></strong> or <strong><em>$id</em></strong>. For Events API, these fields must be on <strong><em>customer_properties</em></strong> for People API it must be <strong><em>properties</em></strong></p>
+    </div>
     <div  class='row'>
       <h2>Usage</h2>
       <h4 class='lead'>The Reaction Klaviyo package exports a Klaviyo Module which has two methods <strong>Klaviyo.trackEvent</strong> and <strong>Klaviyo.trackPerson</strong>, these methods accect an object that then hits the Klaviyo's Events or People API.</h4>
+      <h4>Klaviyo.trackEvent()</h4>
+      <p>Example JSON from Docs (minus the API Key) but you can pass whatever information you want with a few stipulations.</p>
+      <div class='well'>
+        <p>let data = {
+            "event" : "Purchased Items",
+            "customer_properties" : {
+              "$email" : "george.washington@example.com"
+            },
+            "properties" : {
+              "Total Price": 24.99,
+              "Items Purchased": ["Cheerios", "Milk", "Cereal Bowls"]
+            },
+            "time" : 1459956503
+            }</p>
+      </div>
+      <p>Line of Code you need to insert:</p>
+      <div class='well'>
+        <h4>Klaviyo.trackEvent(data);</h4>
+      </div>
     </div>
     <div  class='row'>
-      <h2>Example</h2>
+      <h2>Implement</h2>
       <h4 class='lead'>Say you wanted to create an action every time a user checked out, that started an email flow.</h4>
-      <p>Two ways to implement</p>
-      <ul>
-        <li>1) Use a <a href='https://docs.reactioncommerce.com/reaction-docs/master/method-hooks'>Reaction Method Hook</a> to call Klaviyo Methods</li>
-        <li>2) Insert directly into your copy of the code.</li>
-      </ul>
+      <p>Create a custom Object with the fields you want</p>
+      <div class='well'>
+        <p>let data = {
+            "event" : "User Checked Out",
+            "customer_properties" : {
+              "$email" : order.email
+            },
+            "properties" : {
+              "Total Price": order.price,
+              "Items Purchased": order.items
+            },
+            "time" : new Date()
+            }</p>
+      </div>
+      <p>Two ways to implement - add <strong>Klaviyo.trackEvent(data)</strong> to either:</p>
+        <p>1) Use a <a href='https://docs.reactioncommerce.com/reaction-docs/master/method-hooks'>Reaction Method Hook</a> to call Klaviyo Methods</p>
+        <p>2) Insert directly into your copy of the code.</p>
+    </div>
+    <div class='row'>
+      <h2>Creating Flows</h2>
+      <p>Once you have your Klaviyo set up, you will need to run that flow. Once it's been run, you will be able to create a new Klaviyo flow that can use that Action as a trigger point. <em>Note: The action will not be choosable, until you run the process a single time.</em></p>
     </div>
   </div>
 </template>
