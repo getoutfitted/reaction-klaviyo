@@ -2,7 +2,7 @@ ReactionCore.registerPackage({
   label: 'Klaviyo',
   name: 'reaction-klaviyo',
   icon: 'fa fa-email',
-  autoEnable: true,
+  autoEnable: false,
   registry: [{
     route: '/dashboard/klaviyo',
     provides: 'dashboard',
@@ -13,7 +13,7 @@ ReactionCore.registerPackage({
     icon: 'fa fa-email',
     template: 'klaviyoDashboard',
     workflow: 'coreWorkflow',
-    priority: 1
+    priority: 3
   }, {
     route: '/dashboard/klaviyo/settings',
     provides: 'settings',
