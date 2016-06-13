@@ -32,7 +32,9 @@ Package.onUse(function (api) {
     'client/templates/settings/settings.html',
     'client/templates/settings/settings.js',
     'client/templates/dashboard/dashboard.html',
-    'client/templates/dashboard/dashboard.js'
+    'client/templates/dashboard/dashboard.js',
+    'client/templates/dashboard/lists.html',
+    'client/templates/dashboard/lists.js'
   ], 'client');
   api.addAssets('images/klaviyo_flow.png', 'client');
 
