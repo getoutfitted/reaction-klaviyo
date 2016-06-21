@@ -1,7 +1,7 @@
 ReactionCore.registerPackage({
   label: 'Klaviyo',
   name: 'reaction-klaviyo',
-  icon: 'fa fa-email',
+  icon: 'fa fa-envelope',
   autoEnable: true,
   registry: [{
     route: '/dashboard/klaviyo',
@@ -10,7 +10,7 @@ ReactionCore.registerPackage({
     label: 'Klaviyo',
     description: 'Klaviyo email campagin and tracking',
     container: 'getoutfitted',
-    icon: 'fa fa-email',
+    icon: 'fa fa-envelope',
     template: 'klaviyoDashboard',
     workflow: 'coreWorkflow',
     priority: 3
