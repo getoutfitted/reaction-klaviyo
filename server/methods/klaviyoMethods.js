@@ -77,7 +77,7 @@ Meteor.methods({
         }
       }, function (err, res) {
         if (err) {
-          Reaction.Log.error('Klaviyo API Error' + err);
+          ReactionCore.Log.error('Klaviyo API Error' + err);
         } else {
           ReactionCore.Log.info(`${email} was added to Klaviyo List`);
         }
@@ -126,5 +126,32 @@ Meteor.methods({
         }
       });
     }
-  }
+  },
+  'klaviyo/addUserToListDirectly': function (email, listId) {
+    check(email, String);
+    check(listId, String);
+    const klaviyoPackage = ReactionCore.Collections.Packages.findOne({
+      name: 'reaction-klaviyo',
+      shopId: ReactionCore.getShopId()
+    });
+    const configured = klaviyoPrivatePackageConfigured(klaviyoPackage);
+    const validEmail = validateEmail(email);
+    if (configured && validEmail && listId) {
+      HTTP.post(`https://a.klaviyo.com/api/v1/list/${listId}/members`, {
+        params: {
+          api_key: klaviyoPackage.settings.api.privateKey,
+          email: email,
+          confirm_optin: false
+        }
+      }, function (err, res) {
+        if (err) {
+          ReactionCore.Log.error('Klaviyo API Error' + err);
+        } else {
+          ReactionCore.Log.info(`${email} was added to Klaviyo List`);
+        }
+      });
+    } else {
+      ReactionCore.Log.warn("Invalid request to add to Klaviyo List");
+    }
+  },
 });
