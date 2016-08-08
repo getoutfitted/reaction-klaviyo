@@ -1,16 +1,21 @@
+import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
+import { Products } from '/lib/collections';
+import $ from 'jquery';
+import './lists.html';
 Template.klaviyoListSetup.onCreated(function () {
   this.subscribe('Products');
 });
 
 Template.klaviyoListSetup.helpers({
   productsWithKlaviyoLists: function () {
-    return ReactionCore.Collections.Products.find({
+    return Products.find({
       emailListId: {$exists: true},
       type: 'simple'
     }).fetch()
   },
   productsWithOutKlaviyoLists: function () {
-    return ReactionCore.Collections.Products.find({
+    return Products.find({
       emailListId: {$exists: false},
       type: 'simple'
     }).fetch()

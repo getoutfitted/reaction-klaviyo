@@ -1,10 +1,15 @@
+import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
+import { Products, Packages } from '/lib/collections';
+import { HTTP } from 'meteor/http';
+import { Reaction, Logger } from '/server/api';
 function klaviyoPrivatePackageConfigured(klaviyoPackage) {
   if (!klaviyoPackage || !klaviyoPackage.enabled) {
-    ReactionCore.Log.error('Klaviyo is not enabled for this shop');
+    Logger.error('Klaviyo is not enabled for this shop');
     return false;
   }
   if (!klaviyoPackage.settings || !klaviyoPackage.settings.api || !klaviyoPackage.settings.api.privateKey) {
-    ReactionCore.Log.error('Klaviyo API Keys are not configured');
+    Logger.error('Klaviyo API Keys are not configured');
     return false
   }
   return true;
@@ -27,13 +32,13 @@ Meteor.methods({
       if (error) {
         let buf = new Buffer(data, 'base64');
         let decoded = JSON.parse(buf.toString());
-        ReactionCore.Log.warn('Klaviyo event was not logged', decoded);
+        Logger.warn('Klaviyo event was not logged', decoded);
       } else if (response.content === '0') {
         let buf = new Buffer(data, 'base64');
         let decoded = JSON.parse(buf.toString());
-        ReactionCore.Log.warn('Klaviyo event was not logged', decoded);
+        Logger.warn('Klaviyo event was not logged', decoded);
       } else {
-        ReactionCore.Log.info('Klaviyo event successfully logged');
+        Logger.info('Klaviyo event successfully logged');
       }
     });
   },
@@ -48,26 +53,26 @@ Meteor.methods({
       if (error) {
         let buf = new Buffer(data, 'base64');
         let decoded = JSON.parse(buf.toString());
-        ReactionCore.Log.warn('Klaviyo person was not logged', decoded);
+        Logger.warn('Klaviyo person was not logged', decoded);
       } else if (response.content === '0') {
         let buf = new Buffer(data, 'base64');
         let decoded = JSON.parse(buf.toString());
-        ReactionCore.Log.warn('Klaviyo person was not logged', decoded);
+        Logger.warn('Klaviyo person was not logged', decoded);
       } else {
-        ReactionCore.Log.info('Klaviyo person successfully identified');
+        Logger.info('Klaviyo person successfully identified');
       }
     });
   },
   'klaviyo/addUserToList': function (productId, email) {
     check(productId, String);
     check(email, String);
-    const klaviyoPackage = ReactionCore.Collections.Packages.findOne({
+    const klaviyoPackage = Packages.findOne({
       name: 'reaction-klaviyo',
-      shopId: ReactionCore.getShopId()
+      shopId: Reaction.getShopId()
     });
     const configured = klaviyoPrivatePackageConfigured(klaviyoPackage);
     const validEmail = validateEmail(email);
-    let product = ReactionCore.Collections.Products.findOne(productId);
+    let product = Products.findOne(productId);
     if (configured && validEmail && product && product.emailListId) {
       HTTP.post(`https://a.klaviyo.com/api/v1/list/${product.emailListId}/members`, {
         params: {
@@ -77,13 +82,13 @@ Meteor.methods({
         }
       }, function (err, res) {
         if (err) {
-          ReactionCore.Log.error('Klaviyo API Error' + err);
+          Logger.error('Klaviyo API Error' + err);
         } else {
-          ReactionCore.Log.info(`${email} was added to Klaviyo List`);
+          Logger.info(`${email} was added to Klaviyo List`);
         }
       });
     } else {
-      ReactionCore.Log.warn("Invalid request to add to Klaviyo List");
+      Logger.warn("Invalid request to add to Klaviyo List");
     }
   },
   'klaviyo/AddKlaviyoListToProduct': function (productId, listId) {
@@ -94,7 +99,7 @@ Meteor.methods({
                      'klaviyo',
                      'dashboard/klaviyo'];
     if (Roles.userIsInRole(this.userId, klaviyoRoles, ReactionCore.getShopId())) {
-      ReactionCore.Collections.Products.update({
+      Products.update({
         _id: productId
       }, {
         $set: {
@@ -114,7 +119,7 @@ Meteor.methods({
                      'klaviyo',
                      'dashboard/klaviyo'];
     if (Roles.userIsInRole(this.userId, klaviyoRoles, ReactionCore.getShopId())) {
-      ReactionCore.Collections.Products.update({
+      Products.update({
         _id: productId
       }, {
         $unset: {
@@ -130,9 +135,9 @@ Meteor.methods({
   'klaviyo/addUserToListDirectly': function (email, listId) {
     check(email, String);
     check(listId, String);
-    const klaviyoPackage = ReactionCore.Collections.Packages.findOne({
+    const klaviyoPackage = Packages.findOne({
       name: 'reaction-klaviyo',
-      shopId: ReactionCore.getShopId()
+      shopId: Reaction.getShopId()
     });
     const configured = klaviyoPrivatePackageConfigured(klaviyoPackage);
     const validEmail = validateEmail(email);
@@ -145,13 +150,13 @@ Meteor.methods({
         }
       }, function (err, res) {
         if (err) {
-          ReactionCore.Log.error('Klaviyo API Error' + err);
+          Logger.error('Klaviyo API Error' + err);
         } else {
-          ReactionCore.Log.info(`${email} was added to Klaviyo List`);
+          Logger.info(`${email} was added to Klaviyo List`);
         }
       });
     } else {
-      ReactionCore.Log.warn("Invalid request to add to Klaviyo List");
+      Logger.warn("Invalid request to add to Klaviyo List");
     }
   },
 });
