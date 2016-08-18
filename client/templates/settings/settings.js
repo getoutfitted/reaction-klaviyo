@@ -1,8 +1,18 @@
+import { Template } from 'meteor/templating';
+import { Packages } from '/lib/collections';
+import { Reaction } from '/client/api';
+import { KlaviyoPackageConfig } from '../../../lib/collections';
+
+import './settings.html';
+
 Template.klaviyoSettings.helpers({
+  KlaviyoPackageConfig() {
+    return KlaviyoPackageConfig;
+  },
   packageData: function () {
-    return ReactionCore.Collections.Packages.findOne({
+    return Packages.findOne({
       name: 'reaction-klaviyo',
-      shopId: ReactionCore.getShopId()
+      shopId: Reaction.getShopId()
     });
   }
 });

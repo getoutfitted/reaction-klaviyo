@@ -1,8 +1,8 @@
 <template name='klaviyoSettings'>
   <div class="panel-body">
     {{#autoForm
-        collection="ReactionCore.Collections.Packages"
-        schema="ReactionCore.Schemas.KlaviyoPackageConfig"
+        collection=Collections.Packages
+        schema=KlaviyoPackageConfig
         doc=packageData
         type="update"
         id="klaviyo-update-form"
